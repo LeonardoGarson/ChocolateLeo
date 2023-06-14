@@ -1,0 +1,35 @@
+Teste de API
+
+O que e uma API
+
+É uma interface de comunicação e processamento entre funções e sistemas
+
+Exemplo Ifood
+
+App Ifood ----> Identifica ----> Lista de ---->      Exibir cardapio ----> pagamento ---> Confirmação ----> Rastreia
+          Abre   VC / GPS         Rest.  Escolhe um                Escolhe                                 o pedido
+
+Receber o pedido / Reclamar
+
+É a forma de dois ou mais sistemas conversarem
+
+Operações de uma API
+Banco de Dados (BD)
+Orientação a Objeto (OO)
+                                                Em API
+(C) Creat               Incluir                 Post
+(R) Reach/Read/Research Consultar               Get
+(U) Update              Atualizar               Put (Completa) / Patch (Parcial)
+(D) Delete              Excluir (Lógica/Física) Delete
+
+LGPD: Lei Geral de Proteção de Dados
+
+Qual o endereço da API? URI Base
+Com quem vou falar? Qual a função vou chamar? Endpoint
+O que é para dizer? Request / Que parametros passar?
+O que devo trazer de volta? Response / Dados
+
+Tipos de documentação de API
+- Manual
+- Padrão ASMX (Exemplo: Correios)
+- Padrão REST - Swagger
