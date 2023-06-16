@@ -30,7 +30,7 @@ public class Account {
     @Test(priority = 1)
     public void testCreateUser(){
         //Arrange - Configura
-        account.userName = "GarsonLF1"; //userName - Entrada e saída (resultado esperado)
+        account.userName = "GarsonLF2"; //userName - Entrada e saída (resultado esperado)
         account.password = "12345678@Leo"; //password -   Entrada
 
         jsonBody = gson.toJson(account); //Converte a entidade usuário no formato Json
