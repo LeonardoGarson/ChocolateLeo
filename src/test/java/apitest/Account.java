@@ -19,19 +19,18 @@ public class Account {
     String jsonBody; //Guardar o json que será enviado
     String uri = "https://bookstore.toolsqa.com/Account/v1/"; //Endereço Base
     Response resposta;
-    String token; //Guardasr o token de identificação do usuário
+    String token; //Guardar o token de identificação do usuário
 
     //3.1.2 - Instanciar Classe Externa
     Gson gson = new Gson(); //Instancia o objeto de conversão de classe para json
-
+    AccountEntity account = new AccountEntity(); //Chama a entidade usuário
     //3.2 Métodos e Funções
 
     // Método #1 - Criar usuário
     @Test(priority = 1)
     public void testCreateUser(){
         //Arrange - Configura
-        AccountEntity account = new AccountEntity(); //Chama a entidade usuário
-        account.userName = "LeoGarson4"; //userName - Entrada e saída (resultado esperado)
+        account.userName = "GarsonLF1"; //userName - Entrada e saída (resultado esperado)
         account.password = "12345678@Leo"; //password -   Entrada
 
         jsonBody = gson.toJson(account); //Converte a entidade usuário no formato Json
@@ -48,15 +47,15 @@ public class Account {
                     .post(uri + "User")
         //Assert - Valida
         .then()
-                .log().all()                        //Registre tudo na volta
-                .statusCode(201)    //Valide o código
-                .body("username", is(account.userName)) //Valida o usuário
+                .log().all()                                    //Registre tudo na volta
+                .statusCode(201)                //Valide o código
+                .body("username", is(account.userName))    //Valida o usuário
                 .extract()
 
         ; //Fim da linha do REST-assured
 
         //Extrair o User ID (Identificação do usuário)
-        userId = resposta.jsonPath().getString("userId");
+        userId = resposta.jsonPath().getString("userID");
         System.out.println("UserId extraido: " + userId);
 
     } //Fim do método de criação do usuário
@@ -113,6 +112,53 @@ public class Account {
                 // .body(true) // ToDo: como validar o retorno do body apenas como true
         ;
 
+    }
+
+    @Test(priority = 4)
+    public void testResearchUserNotAuthorized(){
+        // Configura
+        // Dados de Entrada
+        // userId foi extraido no método testCreateUser e está na memória
+        // Dados de Saída / Resultado Esperado
+        // Status Code = 401, Code = 1200 e Message = User not authorized!
+
+        // Executa
+        given()                                     // Dado // Comandos do REST-assured
+                .contentType(ct)                    // Formato da mensagem
+                .log().all()                        // Exibir tudo que acontece na ida
+                .when()                                     // Quando
+                .get(uri + "User/" + userId)   // Consulta o usuário pelo userId
+                // Valida
+                .then()                                     // Então
+                .log().all()                        // Exibir tudo que acontece na volta
+                .statusCode(401)     // Valida se não está autorizado
+                .body("code", is("1200")) // Valida o código de mensagem "não autorizado"
+                .body("message", is("User not authorized!"))
+        ;                                           // Conclui o bloco do REST-assured
+    }
+
+    @Test(priority = 5)
+    public void testResearchUser(){
+        // Configura
+        // Dados de Entrada
+        // userId foi extraido no método testCreateUser e está na memória
+        // Dados de Saída / Resultado Esperado
+        // userName virá da classe Account e o status code deve ser 200
+
+        // Executa
+        given()                                     // Dado // Comandos do REST-assured
+                .contentType(ct)                    // Formato da mensagem
+                .log().all()                        // Exibir tudo que acontece na ida
+                .header("Authorization", "Bearer " + token)
+                .when()                                     // Quando
+                .get(uri + "User/" + userId)   // Consulta o usuário pelo userId
+                // Valida
+                .then()                                     // Então
+                .log().all()                        // Exibir tudo que acontece na volta
+                .statusCode(200)     // Valida se a conexão teve sucesso
+                .body("userId", is(userId))
+                .body("username", is(account.userName)) // Valida o nome do usuário
+        ;                                           // Conclui o bloco do REST-assured
     }
 
 }
