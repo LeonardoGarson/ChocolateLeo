@@ -163,7 +163,7 @@ public class Account {
         ;                                           // Conclui o bloco do REST-assured
     }
 
-    @Test(priority = 6)
+    @Test(priority = 20)
     public void testDeleteUser(){
         //Configura
         //Dados de entrada vem do método de testes da criação do usuário
