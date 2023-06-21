@@ -30,8 +30,8 @@ public class Account {
     @Test(priority = 1)
     public void testCreateUser(){
         //Arrange - Configura
-        account.userName = "GarsonLF2"; //userName - Entrada e saída (resultado esperado)
-        account.password = "12345678@Leo"; //password -   Entrada
+        account.userName = "LeoGarson23";   //userName - Entrada e saída (resultado esperado)
+        account.password = "12345678@Leo";  //password -   Entrada
 
         jsonBody = gson.toJson(account); //Converte a entidade usuário no formato Json
 
@@ -39,7 +39,8 @@ public class Account {
 
         //Dado - Quando - Então
         //Given - When - Then
-        resposta = (Response) given()
+        resposta = (Response)
+        given()
                 .contentType(ct)        //Tipo de conteúdo
                 .log().all()            //Registre tudo
                 .body(jsonBody)         //Corpo da mensagem
@@ -66,13 +67,14 @@ public class Account {
             //--> Dados de entrada são fornecidos pela AccountEntity
             //--> Resultado esperado é que ele receba um token
         //Executa
-           resposta = (Response) given()
+       resposta = (Response)
+       given()
                     .contentType(ct)
                     .log().all()
                     .body(jsonBody)
-            .when()
+       .when()
                     .post(uri + "GenerateToken")
-            .then()
+       .then()
                    .log().all()
                    .statusCode(200) // valida a comunicação
                    .body("status", is("Success")) // Status = Sucesso
@@ -126,10 +128,10 @@ public class Account {
         given()                                     // Dado // Comandos do REST-assured
                 .contentType(ct)                    // Formato da mensagem
                 .log().all()                        // Exibir tudo que acontece na ida
-                .when()                                     // Quando
+        .when()                                     // Quando
                 .get(uri + "User/" + userId)   // Consulta o usuário pelo userId
                 // Valida
-                .then()                                     // Então
+        .then()                                     // Então
                 .log().all()                        // Exibir tudo que acontece na volta
                 .statusCode(401)     // Valida se não está autorizado
                 .body("code", is("1200")) // Valida o código de mensagem "não autorizado"
@@ -150,15 +152,37 @@ public class Account {
                 .contentType(ct)                    // Formato da mensagem
                 .log().all()                        // Exibir tudo que acontece na ida
                 .header("Authorization", "Bearer " + token)
-                .when()                                     // Quando
+        .when()                                     // Quando
                 .get(uri + "User/" + userId)   // Consulta o usuário pelo userId
                 // Valida
-                .then()                                     // Então
+        .then()                                     // Então
                 .log().all()                        // Exibir tudo que acontece na volta
                 .statusCode(200)     // Valida se a conexão teve sucesso
                 .body("userId", is(userId))
                 .body("username", is(account.userName)) // Valida o nome do usuário
         ;                                           // Conclui o bloco do REST-assured
+    }
+
+    @Test(priority = 6)
+    public void testDeleteUser(){
+        //Configura
+        //Dados de entrada vem do método de testes da criação do usuário
+        //Resultado esperado é o código e a mensagem de sucesso da exclusão do usuário
+
+        //Executa
+        given()
+                .contentType(ct)
+                .log().all()
+                .header("Authorization", "Bearer " + token)
+        .when()
+                .delete(uri + "User/" + userId)
+
+        ///Valida
+        .then()
+                .log().all()
+                .statusCode(204)
+        ;
+
     }
 
 }
