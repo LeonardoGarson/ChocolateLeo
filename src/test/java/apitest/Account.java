@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
-// Classe
+//Classe
 public class Account {
     //3.1 Atributos
     String userId;
@@ -182,7 +182,7 @@ public class Account {
                 .log().all()
                 .statusCode(204)
         ;
-
+//teste
     }
 
 }
