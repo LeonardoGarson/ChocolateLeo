@@ -7,19 +7,20 @@ import entities.AccountEntity;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.ITestContext; //Interface do TestNG para compartilhar variáveis
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 //Classe
-public class Account {
+public class TestAccount {
     //3.1 Atributos
     String userId;
     String ct = "application/json"; //ContentType da API
     String jsonBody; //Guardar o json que será enviado
     String uri = "https://bookstore.toolsqa.com/Account/v1/"; //Endereço Base
     Response resposta;
-    String token; //Guardar o token de identificação do usuário
+    static String token; //Guardar o token de identificação do usuário
 
     //3.1.2 - Instanciar Classe Externa
     Gson gson = new Gson(); //Instancia o objeto de conversão de classe para json
@@ -28,9 +29,9 @@ public class Account {
 
     // Método #1 - Criar usuário
     @Test(priority = 1)
-    public void testCreateUser(){
+    public void testCreateUser(ITestContext context){
         //Arrange - Configura
-        account.userName = "LeoGarson23";   //userName - Entrada e saída (resultado esperado)
+        account.userName = "LeoGarson27";   //userName - Entrada e saída (resultado esperado)
         account.password = "12345678@Leo";  //password -   Entrada
 
         jsonBody = gson.toJson(account); //Converte a entidade usuário no formato Json
@@ -56,13 +57,15 @@ public class Account {
         ; //Fim da linha do REST-assured
 
         //Extrair o User ID (Identificação do usuário)
+
         userId = resposta.jsonPath().getString("userID");
+        context.setAttribute("userID" , userId);
         System.out.println("UserId extraido: " + userId);
 
     } //Fim do método de criação do usuário
 
     @Test(priority = 2)
-    public void testGenerateToken(){
+    public void testGenerateToken(ITestContext context){ //Necessário declarar a interface de contexto
         //Configura
             //--> Dados de entrada são fornecidos pela AccountEntity
             //--> Resultado esperado é que ele receba um token
@@ -84,6 +87,8 @@ public class Account {
 
        //Extração do toke
        token = resposta.jsonPath().getString("token");
+       context.setAttribute("token" , token);
+       System.out.println("Token: " + token);
 
         //Valida
         Assert.assertTrue(token.length() != 0);
