@@ -13,7 +13,7 @@ Feature: Select product in the store
     Given I access the SauceDemo store
     When I fill in the username "standard_user" and password "secret_sauce"
     And I click on login
-    Then the page title is displayed as "Products"
+    Then I check the page's title "Products"
     And the shopping cart link is displayed
     When I click on the "4" product
     Then I check the title of the product "Sauce Labs Backpack"
@@ -21,6 +21,6 @@ Feature: Select product in the store
     When I click in Add to Cart
     And I click in Cart icon
     Then I check the page's title "Your Cart"
-    And I check the title of the product "Sauce Labs Backpack"
-    And I check the price of the product "$29.99"
+    And I check the title of the product "Sauce Labs Backpack" in cart
+    And I check the price of the product "$29.99" in cart
     And I check if the quantity of the product is "1"
