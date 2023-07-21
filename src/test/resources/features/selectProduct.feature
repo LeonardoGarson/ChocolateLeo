@@ -24,3 +24,4 @@ Feature: Select product in the store
     And I check the title of the product "Sauce Labs Backpack" in cart
     And I check the price of the product "$29.99" in cart
     And I check if the quantity of the product is "1"
+    //
