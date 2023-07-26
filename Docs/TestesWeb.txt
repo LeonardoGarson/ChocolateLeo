@@ -78,3 +78,4 @@ Existem diversas formas de instalar o driver:
 1 - Localizadores/Seletores/Identificadores de elementos
 2 - Sincronismo/Esperar/Wait (Temporário/Implícito/Explícito/Fluente)
 3 - "Programação exótica"
+
