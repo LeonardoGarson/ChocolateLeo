@@ -9,10 +9,12 @@ import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -28,11 +30,14 @@ public class selectProduct {
         WebDriverManager.chromedriver().setup();            //Baixar a versão mais atual do ChromeDriver
         driver = new ChromeDriver(options);                 //Instancia o objeto selenium como ChromeDriver
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000)); //Estabelece uma espera implícita para carregar qualquer elemento
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(6000)); //Estabelece uma espera implícita para carregar qualquer elemento
         driver.manage().window().maximize();                                //Maximiza a janela
     }
+
     @AfterAll   //Executa após todos os blocos de passos --> Usar o mesmo do Before
-    public static void tearDown(){
+    public static void tearDown() throws InterruptedException {
+        //Thread.sleep(3000);
+
         driver.quit();   //Encerra o objeto do selenium WebDriver
 
     }
@@ -46,7 +51,8 @@ public class selectProduct {
     @When("I fill in the username {string} and password {string}")
     public void i_fill_in_the_username_and_password(String user, String password) {
         driver.findElement(By.id("user-name")).sendKeys(user);          //Escreve o conteúdo da variável user
-        driver.findElement(By.id("password")).sendKeys(password);    //Escreve o conteúdo da variável password
+        driver.findElement(By.id("password")).sendKeys(password);       //Escreve o conteúdo da variável password
+
     }
 
     @And("I click on login")
@@ -87,7 +93,8 @@ public class selectProduct {
     @When("I click in Add to Cart")
     public void i_click_in_add_to_cart() {
         //Clica no botão adicionar ao carrinho
-        driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).click();
+        //driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).click();
+        driver.findElement(By.cssSelector("button.btn.btn_primary.btn_small.btn_inventory")).click();
     }
 
     @And("I click in Cart icon")
@@ -103,7 +110,18 @@ public class selectProduct {
     }
 
     @Then("I check the title of the product {string} in cart")
-    public void i_check_the_title_of_the_product_in_cart(String productTitle) {
+    public void i_check_the_title_of_the_product_in_cart(String productTitle) throws InterruptedException {
+
+        Thread.sleep(5000);
+
+        List<WebElement> lista = driver.findElements(By.cssSelector("div.inventory_item_name"));
+
+        for (int i = 1; i < lista.size(); i++) {
+            driver.findElement(By.cssSelector("button.btn.btn_secondary.btn_small.cart_button")).click();
+
+        }
+        Thread.sleep(3000);
+
         assertEquals(driver.findElement(By.cssSelector("div.inventory_item_name")).getText(), productTitle);
     }
 
@@ -112,7 +130,5 @@ public class selectProduct {
         assertEquals(driver.findElement(By.cssSelector("div.inventory_item_price")).getText(), productPrice);
 
     }
-
-//
 
 }

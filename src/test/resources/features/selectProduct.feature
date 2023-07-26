@@ -24,4 +24,24 @@ Feature: Select product in the store
     And I check the title of the product "Sauce Labs Backpack" in cart
     And I check the price of the product "$29.99" in cart
     And I check if the quantity of the product is "1"
-    //
+
+
+  Scenario Outline: Select product successfully DDT
+    Given I access the SauceDemo store
+    When I fill in the username <user> and password <password>
+    And I click on login
+    Then I check the page's title "Products"
+    And the shopping cart link is displayed
+    When I click on the <productId> product
+    Then I check the title of the product <productTitle>
+    And I check the price of the product <productPrice>
+    When I click in Add to Cart
+    And I click in Cart icon
+    Then I check the page's title "Your Cart"
+    And I check the title of the product <productTitle> in cart
+    And I check the price of the product <productPrice> in cart
+    And I check if the quantity of the product is "1"
+    Examples:
+      | user                      | password       | productId  | productTitle            | productPrice  |
+      | "standard_user"           | "secret_sauce" | "4"        | "Sauce Labs Backpack"   | "$29.99"      |
+      | "performance_glitch_user" | "secret_sauce" | "0"        | "Sauce Labs Bike Light" | "$9.99"       |
